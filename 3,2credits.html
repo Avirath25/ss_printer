@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CIE Calculator • 3/2/1 Credit</title>
+  <style>
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      color: #e8eefc;
+      background: linear-gradient(180deg, #0a0f1e, #0b1020);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      width: 95%;
+      max-width: 1000px;
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      color: #cfe0ff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: rgba(106,168,255,0.15);
+      color: #a7b3d1;
+    }
+    input {
+      width: 60px;
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      text-align: center;
+    }
+    .btn {
+      margin-top: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #93baff, #6aa8ff);
+      color: #0b1020;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn:hover { filter: brightness(1.05); }
+    #gradeBox {
+      margin-top: 18px;
+      font-size: 16px;
+      text-align: center;
+      color: #cfe0ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>3/2/1 Credit Course CIE Calculator</h1>
+    <form id="cieForm">
+      <table>
+        <tr>
+          <th>Test-1 (40)</th>
+          <th>Test-2 (40)</th>
+          <th>Makeup (40)</th>
+          <th>Best 2 Avg (40)</th>
+          <th>Internals (25)</th>
+          <th>Asg-1 (25)</th>
+          <th>Asg-2 (25)</th>
+          <th>Avg Asg (25)</th>
+          <th>Final CIE (50)</th>
+        </tr>
+        <tr>
+          <td><input type="number" id="test1" min="0" max="40"></td>
+          <td><input type="number" id="test2" min="0" max="40"></td>
+          <td><input type="number" id="makeup" min="0" max="40"></td>
+          <td id="avg40"></td>
+          <td id="scaled25"></td>
+          <td><input type="number" id="asg1" min="0" max="25"></td>
+          <td><input type="number" id="asg2" min="0" max="25"></td>
+          <td id="asgAvg"></td>
+          <td id="finalCie"></td>
+        </tr>
+      </table>
+      <button type="submit" class="btn">Calculate</button>
+    </form>
+    <div id="gradeBox"></div>
+  </div>
+
+  <script>
+    document.getElementById("cieForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const t1 = parseFloat(document.getElementById("test1").value) || 0;
+      const t2 = parseFloat(document.getElementById("test2").value) || 0;
+      const mu = parseFloat(document.getElementById("makeup").value) || 0;
+      const a1 = parseFloat(document.getElementById("asg1").value) || 0;
+      const a2 = parseFloat(document.getElementById("asg2").value) || 0;
+
+      // best 2 internals
+      const internals = [t1, t2, mu].sort((a,b)=>b-a).slice(0,2);
+      const avg40 = (internals[0] + internals[1]) / 2;
+      const scaled25 = (avg40 / 40) * 25;
+
+      // assignments avg
+      const asgAvg = (a1 + a2) / 2;
+
+      // final cie
+      const finalCie = Math.ceil(scaled25 + asgAvg);
+
+      // update table
+      document.getElementById("avg40").innerText = avg40.toFixed(1);
+      document.getElementById("scaled25").innerText = scaled25.toFixed(1);
+      document.getElementById("asgAvg").innerText = asgAvg.toFixed(1);
+      document.getElementById("finalCie").innerText = finalCie;
+
+      // grade system
+      let grade = "";
+      if (finalCie >= 45) grade = "O - Outstanding";
+      else if (finalCie >= 40) grade = "A+ - Excellent";
+      else if (finalCie >= 35) grade = "A - Very Good";
+      else if (finalCie >= 30) grade = "B+ - Good";
+      else if (finalCie >= 25) grade = "B - Above Average";
+      else if (finalCie >= 20) grade = "C - Average";
+      else if (finalCie >= 15) grade = "P - Pass";
+      else grade = "F - Fail";
+
+      document.getElementById("gradeBox").innerHTML = `<b>Grade:</b> ${grade}`;
+    });
+  </script>
+</body>
+</html>

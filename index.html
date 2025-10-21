@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Summary Sheet Printer - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    html,body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: radial-gradient(ellipse at 30% 12%,#c3aaf3 0%, #7e84f3 80%, #6653b1 100%);
+      display: flex; justify-content: center; align-items: center;
+    }
+    .calci-btn {
+      position: fixed;
+      top: 20px;
+      right: 28px;
+      background: linear-gradient(90deg, #745cee 0%, #aa7aff 100%);
+      color: white;
+      padding: 14px 30px;
+      font-weight: 900;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      border-radius: 26px;
+      border: none;
+      box-shadow: 0 6px 14px #716ade66;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+      z-index: 1000;
+    }
+    .calci-btn:hover, .calci-btn:focus {
+      background: linear-gradient(90deg, #aa7aff 0%, #745cee 100%);
+      box-shadow: 0 10px 28px #a089ffcc;
+      transform: translateY(-2px);
+      outline: none;
+    }
+    .card {
+      background: rgba(255,255,255,0.85);
+      border-radius: 28px;
+      box-shadow: 0 10px 60px #7e75b133, 0 2px 18px #6f56ce36,0 0px 0 1.5px #b6a3f540;
+      max-width: 380px; width:calc(96vw);
+      padding: 38px 30px 34px 30px;
+      display: flex; flex-direction: column; align-items: center;
+      position: relative;
+      backdrop-filter: blur(19px) saturate(140%);
+      animation: popIn .6s cubic-bezier(0.6,1.4,.34,.99);
+      overflow: visible;
+    }
+    @keyframes popIn {
+      from{opacity:0;transform:scale(1.06) translateY(42px);}
+      to{opacity:1;transform:scale(1) translateY(0);}
+    }
+    .mit-title {
+      font-size: 1.75rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      margin-bottom: 7px;
+      margin-top: -4px;
+      background: linear-gradient(93deg,#7a5cfa 10%, #fdca44 60%, #5464e2 95%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent; 
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+      filter: drop-shadow(0 3px 12px #e4dcff51);
+      user-select: none;
+      border-radius: 14px;
+      padding: 6px 0 3px 0;
+      text-shadow: 0 2px 18px #9c98e93b;
+    }
+    .title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #5646aa;
+      letter-spacing: 0.045em;
+      margin-bottom: 15px;
+      margin-top: 2px;
+      text-align: center;
+      user-select: none;
+      text-shadow: 0 4px 18px #8d83d33a;
+    }
+    .toggle-bar {
+      background: #efe5ff;
+      border-radius: 18px;
+      box-shadow: 0 2px 18px #b6a3f522;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto 18px auto;
+      padding: 7px 0;
+      position: relative;
+    }
+    .toggle-btn {
+      border: none;
+      background: none;
+      font-size: 1.12rem;
+      font-weight: 900;
+      padding: 11px 32px;
+      color: #705bb5;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all .19s;
+      letter-spacing: .02em;
+      outline: none;
+      display: flex; align-items: center; gap: 8px;
+      margin: 0 8px;
+    }
+    .toggle-btn.active {
+      background: linear-gradient(90deg,#887cff 68%,#a3b1ff 100%);
+      color: #fff;
+      box-shadow: 0 5px 15px #a3b1ff33;
+      transform: scale(1.09);
+      font-weight: 900;
+    }
+    .role-icon {
+      font-size: 1.18em;
+      filter: drop-shadow(0 1px 2px #c9a3ff66);
+      margin-right: 6px;
+    }
+    .login-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 0;
+    }
+    .input-row {
+      background: rgba(244,247,255,0.98);
+      border-radius: 14px;
+      box-shadow: 0 1.5px 9px #b0a6d529 inset;
+      display: flex; align-items: center;
+      border: 1.6px solid #e5e4fd;
+      padding: 7px 13px 7px 15px;
+      gap: 9px;
+      transition: border .23s;
+    }
+    .input-row:focus-within { border: 1.6px solid #7e62c9; }
+    .input-icon { color: #7264b6d9; font-size: 1.15rem; }
+    .input-row input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 1rem;
+      font-family: inherit;
+      color: #403167;
+      font-weight: 600;
+      padding: 8px 2px;
+    }
+    .input-row input::placeholder { color: #a8b1c6; font-weight: 400;}
+    .login-btn {
+      width: 100%;
+      margin: 9px 0 8px 0;
+      padding: 12px 0;
+      border-radius: 13px;
+      background: linear-gradient(95deg, #7166ee 0%, #a187f9 98%);
+      color: #fff;
+      font-size: 1.07rem;
+      font-weight: 900;
+      letter-spacing: .03em;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 5px 24px #887cff24, 0 2px 6px #937cff15;
+      transition: 
+        transform .16s, 
+        box-shadow .16s,
+        background .22s;
+    }
+    .login-btn:hover, .login-btn:focus {
+      background: linear-gradient(100deg,#a187f9 20%,#7166ee 95%);
+      box-shadow: 0 8px 24px #7e62dd24, 0 4px 16px #a087fa19;
+      transform: scale(1.033);
+    }
+    .error {
+      color: #e9475d;
+      text-align: center;
+      font-size: .97rem;
+      margin-bottom: 2px;
+      min-height: 18px;
+      font-weight: 600;
+      letter-spacing: .01em;
+    }
+    @media (max-width:460px){
+      .card{padding: 16px 2vw 12px 2vw;max-width:99vw;}
+      .toggle-bar{max-width:97vw;}
+      .mit-title{font-size:1.10rem;}
+      .toggle-btn{padding:10px 16px;}
+    }
+  </style>
+</head>
+<body>
+  <button class="calci-btn" onclick="window.location.href='selection.html'" aria-label="Direct Calci page">CALCI</button>
+  <div class="card">
+    <div class="mit-title">MIT MYSORE</div>
+    <div class="title">Summary Sheet Printer</div>
+    <div class="toggle-bar">
+      <button class="toggle-btn active" id="studentBtn" onclick="showForm('student')">
+        <span class="role-icon">🎓</span>Student
+      </button>
+      <button class="toggle-btn" id="teacherBtn" onclick="showForm('teacher')">
+        <span class="role-icon">👩‍🏫</span>Teacher
+      </button>
+    </div>
+    <div class="error" id="errorDiv" role="alert" aria-live="assertive"></div>
+    <form class="login-form" id="studentForm" autocomplete="off" onsubmit="return studentLogin(event)">
+      <div class="input-row">
+        <span class="input-icon" aria-hidden="true">🎓</span>
+        <input type="text" required placeholder="USN" id="studentUSN" aria-label="Student USN">
+      </div>
+      <div class="input-row">
+        <span class="input-icon" aria-hidden="true">🔑</span>
+        <input type="password" required placeholder="Password" id="studentPwd" aria-label="Student password">
+      </div>
+      <button class="login-btn" type="submit">Login as Student</button>
+    </form>
+    <form class="login-form" id="teacherForm" autocomplete="off" style="display:none" onsubmit="return teacherLogin(event)">
+      <div class="input-row">
+        <span class="input-icon" aria-hidden="true">✉️</span>
+        <input type="email" required placeholder="Email ID" id="teacherEmail" aria-label="Teacher email">
+      </div>
+      <div class="input-row">
+        <span class="input-icon" aria-hidden="true">🔑</span>
+        <input type="password" required placeholder="Password" id="teacherPwd" aria-label="Teacher password">
+      </div>
+      <button class="login-btn" type="submit">Login as Teacher</button>
+    </form>
+  </div>
+  <script>
+    function showForm(type) {
+      document.getElementById('studentForm').style.display = type === 'student' ? '' : 'none';
+      document.getElementById('teacherForm').style.display = type === 'teacher' ? '' : 'none';
+      document.getElementById('studentBtn').classList.toggle('active', type==='student');
+      document.getElementById('teacherBtn').classList.toggle('active', type==='teacher');
+      document.getElementById('errorDiv').textContent = '';
+    }
+    function studentLogin(e) {
+      e.preventDefault();
+      var pwd = document.getElementById('studentPwd').value;
+      if(pwd !== 'student') {
+        document.getElementById('errorDiv').textContent = "Invalid student password.";
+        return false;
+      }
+      document.getElementById('errorDiv').textContent = "";
+      window.location.href = "ssheet.html";
+      return false;
+    }
+    function teacherLogin(e) {
+      e.preventDefault();
+      var pwd = document.getElementById('teacherPwd').value;
+      if(pwd !== 'teacher@mit') {
+        document.getElementById('errorDiv').textContent = "Invalid teacher password.";
+        return false;
+      }
+      document.getElementById('errorDiv').textContent = "";
+      window.location.href = "creditcalc.html";
+      return false;
+    }
+  </script>
+</body>
+</html>
